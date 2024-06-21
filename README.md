@@ -1,26 +1,24 @@
-# AzureTLS Client 
-[![GoDoc](https://godoc.org/github.com/Noooste/azuretls-client?status.svg)](https://godoc.org/github.com/Noooste/azuretls-client)
-![Coverage](https://img.shields.io/badge/Coverage-79.5%25-brightgreen)
-[![build](https://github.com/Noooste/azuretls-client/actions/workflows/push.yml/badge.svg)](https://github.com/Noooste/azuretls-client/actions/workflows/push.yml)
-[![Go Report Card](https://goreportcard.com/badge/Noooste/azuretls-client)](https://goreportcard.com/report/Noooste/azuretls-client)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Noooste/azuretls-client/blob/master/LICENSE)
+# AzureTLS Client
 
-# 📖 Introduction 
+[![GoDoc](https://godoc.org/github.com/stack1ng/azuretls-client?status.svg)](https://godoc.org/github.com/stack1ng/azuretls-client)
+![Coverage](https://img.shields.io/badge/Coverage-79.5%25-brightgreen)
+[![build](https://github.com/stack1ng/azuretls-client/actions/workflows/push.yml/badge.svg)](https://github.com/stack1ng/azuretls-client/actions/workflows/push.yml)
+[![Go Report Card](https://goreportcard.com/badge/Noooste/azuretls-client)](https://goreportcard.com/report/Noooste/azuretls-client)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/stack1ng/azuretls-client/blob/master/LICENSE)
+
+# 📖 Introduction
 
 Welcome to AzureTLS Client, a robust and flexible HTTP client library for Golang designed with security and customization in mind. Whether you're building a web scraper, an API client, or any application that requires HTTP requests, AzureTLS Client provides a suite of features to meet your needs.
 
 ## Why AzureTLS Client?
 
 - **Security**: With built-in SSL pinning and proxy support, AzureTLS Client takes security seriously, ensuring your connections are secure and reliable.
-  
 - **Customization**: Modify TLS ClientHello fingerprints, configure HTTP/2 settings, and even set ordered headers. AzureTLS Client is built to be as flexible as your project requires.
-  
 - **Performance**: Built on top of Golang's native packages, AzureTLS Client is designed for speed and efficiency, making it suitable for both small and large-scale applications.
 
 Whether you're a seasoned developer looking for a feature-rich HTTP client or you're just getting started with Golang, AzureTLS Client offers a blend of performance, customization, and security to help you build better applications.
 
-
-# 🌟 Features 
+# 🌟 Features
 
 - Latest Chrome ClientHello Support
 - HTTP/1.1 and HTTP/2 Compatibility
@@ -32,40 +30,36 @@ Whether you're a seasoned developer looking for a feature-rich HTTP client or yo
 - Integrated Cookie Jar
 - Websocket with JA3
 
+# 📑 Table of Contents
 
-
-📑 Table of Contents
-=================
-
-* [Table of Contents](#-table-of-contents)
-* [Dependencies](#dependencies)
-* [Installation](#installation)
-* [Usage](#usage)
-   * [Create a Session](#create-a-session)
-   * [Make Requests](#make-requests)
-      * [GET](#get)
-      * [POST](#post)
-      * [PUT](#put)
-      * [PATCH](#patch)
-      * [DELETE](#delete)
-      * [OPTIONS](#options)
-      * [HEAD](#head)
-      * [CONNECT](#connect)
-   * [Modify TLS Client Hello (JA3)](#modify-tls-client-hello-ja3)
-   * [Modify HTTP2](#modify-http2)
-   * [Headers](#headers)
-   * [Proxy](#proxy)
-   * [SSL Pinning](#ssl-pinning)
-   * [Timeout](#timeout)
-   * [PreHook and CallBack](#prehook-and-callback)
-   * [Cookies](#cookies)
-   * [Websocket](#websocket)
-   * [Utils](#utils)
-      * [Response to JSON](#response-to-json)
-      * [Url encode](#url-encode)
-   * [Dump](#dump)
-   * [Log](#log)
-
+- [Table of Contents](#-table-of-contents)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Create a Session](#create-a-session)
+  - [Make Requests](#make-requests)
+    - [GET](#get)
+    - [POST](#post)
+    - [PUT](#put)
+    - [PATCH](#patch)
+    - [DELETE](#delete)
+    - [OPTIONS](#options)
+    - [HEAD](#head)
+    - [CONNECT](#connect)
+  - [Modify TLS Client Hello (JA3)](#modify-tls-client-hello-ja3)
+  - [Modify HTTP2](#modify-http2)
+  - [Headers](#headers)
+  - [Proxy](#proxy)
+  - [SSL Pinning](#ssl-pinning)
+  - [Timeout](#timeout)
+  - [PreHook and CallBack](#prehook-and-callback)
+  - [Cookies](#cookies)
+  - [Websocket](#websocket)
+  - [Utils](#utils)
+    - [Response to JSON](#response-to-json)
+    - [Url encode](#url-encode)
+  - [Dump](#dump)
+  - [Log](#log)
 
 ## Dependencies
 
@@ -76,37 +70,40 @@ golang ^1.20
 ## Installation
 
 ```bash
-$ go get github.com/Noooste/azuretls-client
-````
+$ go get github.com/stack1ng/azuretls-client
+```
 
 ## Usage
 
 ```go
 import (
-    "github.com/Noooste/azuretls-client"
+    "github.com/stack1ng/azuretls-client"
 )
 ```
 
 ### Create a Session
+
 ```go
 // without context
 session := azuretls.NewSession()
 // don't forget to close the session when you no longer need it, to free up resources
-defer session.Close() 
+defer session.Close()
 
 // or with context
 session := azuretls.NewSessionWithContext(context.Background())
 defer session.Close()
 ```
+
 ### Make Requests
 
 #### REQUEST ARGUMENTS
 
 You can pass arguments to the request methods.
 Valid arguments are:
+
 - `azuretls.OrderedHeaders`: for ordered headers (of type `[][]string`)
 - `http.Header`: for headers (of type `map[string]string`)
-- `azuretls.HeaderOrder`: for `http.Header` order  (of type `[]string`)
+- `azuretls.HeaderOrder`: for `http.Header` order (of type `[]string`)
 - `time.Duration`: for the request timeout
 
 #### REQUEST REDIRECTS
@@ -116,6 +113,7 @@ Otherwise, it will follow redirects until the `MaxRedirects` limit is reached (d
 You can modify the maximum number of redirects with `session.MaxRedirects` or `request.MaxRedirects`.
 
 #### GET
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -130,11 +128,12 @@ fmt.Println(response.StatusCode, string(response.Body))
 ```
 
 To do a POST, PUT or PATCH requests, you can use as body:
-  - `string` 
-  - `[]byte`
-  - `io.Reader` 
-  - anything that can be marshalled to JSON
-    
+
+- `string`
+- `[]byte`
+- `io.Reader`
+- anything that can be marshalled to JSON
+
 #### POST
 
 ```go
@@ -149,6 +148,7 @@ response, err := session.Post("https://tls.peet.ws/api/all", []byte(`{"test": "t
 ```
 
 #### PUT
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -158,6 +158,7 @@ response, err := session.Put("https://tls.peet.ws/api/all", `{"test": "test"}`)
 ```
 
 #### PATCH
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -167,6 +168,7 @@ response, err := session.Patch("https://tls.peet.ws/api/all", `{"test": "test"}`
 ```
 
 #### DELETE
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -175,6 +177,7 @@ response, err := session.Delete("https://tls.peet.ws/api/all")
 ```
 
 #### OPTIONS
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -183,6 +186,7 @@ response, err := session.Options("https://tls.peet.ws/api/all")
 ```
 
 #### HEAD
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -204,9 +208,11 @@ response, err := session.Connect("https://tls.peet.ws/api/all")
 ```
 
 #
+
 ### Modify TLS Client Hello (JA3)
 
 To modify your ClientHello, you have two options:
+
 - The first one is to use the `session.ApplyJA3` method, which takes a JA3 fingerprint and the target browser (chrome, firefox, safari, ...).
 - The second one is to assign a method to `session.GetClientHelloSpec` that returns TLS configuration.
 
@@ -235,10 +241,12 @@ fmt.Println(response.StatusCode, string(response.Body))
 ```
 
 #
+
 ### Modify HTTP2
 
-To modify HTTP2, you have to apply the HTTP2 fingerprint to the session. 
+To modify HTTP2, you have to apply the HTTP2 fingerprint to the session.
 You can retrieve your HTTP/2 fingerprint there : [tls.peet.ws](https://tls.peet.ws/)
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -255,7 +263,9 @@ if err != nil {
 
 fmt.Println(response.StatusCode, string(response.Body))
 ```
+
 #
+
 ### Headers
 
 You can define headers for the session with the `session.Header` attribute, or use the `session.OrderedHeaders` attribute to maintain header order.
@@ -320,6 +330,7 @@ if err != nil {
 ```
 
 #
+
 ### Proxy
 
 You can set a proxy to the session with the `session.SetProxy` method.
@@ -327,6 +338,7 @@ You can set a proxy to the session with the `session.SetProxy` method.
 If the proxy needs to be cleared, you can do `session.ClearProxy`.
 
 Supported proxy formats include:
+
 - `http(s)://ip`
 - `http(s)://ip:port`
 - `http(s)://username:password@ip:port`
@@ -337,8 +349,8 @@ Supported proxy formats include:
 - `ip:port:username:password`
 - `username:password:ip:port`
 - `username:password@ip:port`
-  
-*If a scheme is not provided, `http` will be used by default.*
+
+_If a scheme is not provided, `http` will be used by default._
 
 ```go
 session := azuretls.NewSession()
@@ -356,12 +368,14 @@ if err != nil {
 
 fmt.Println(response.StatusCode, string(response.Body))
 ```
+
 #
+
 ### SSL Pinning
 
 SSL pinning is enabled by default.
 
-*SSL pinning ensures that you are connecting to the intended server and mitigates the risk of man-in-the-middle attacks, such as those potentially executed using tools like Charles Proxy.*
+_SSL pinning ensures that you are connecting to the intended server and mitigates the risk of man-in-the-middle attacks, such as those potentially executed using tools like Charles Proxy._
 
 ```go
 session := azuretls.NewSession()
@@ -377,14 +391,14 @@ if err != nil {
 fmt.Println(response.StatusCode, string(response.Body))
 ```
 
-If you're concerned about the reliability of a server, you can improve security by manually setting pins prior to initiating any requests within the session, using the `session.AddPins` method. 
+If you're concerned about the reliability of a server, you can improve security by manually setting pins prior to initiating any requests within the session, using the `session.AddPins` method.
 The pins are generated through the following series of steps:
 
 1. SubjectPublicKeyInfo is first DER-encoded.
 2. The DER-encoded data is then hashed using the SHA-256 algorithm.
 3. Finally, the hashed output is base64 encoded to generate the pin.
 
-*It's not necessary for every certificate in the chain to match a pin. If even a single certificate in the chain matches one of the pre-defined pins, the entire chain is considered valid : this approach allows for flexibility in the certificate chain while still providing an additional layer of security.* 
+_It's not necessary for every certificate in the chain to match a pin. If even a single certificate in the chain matches one of the pre-defined pins, the entire chain is considered valid : this approach allows for flexibility in the certificate chain while still providing an additional layer of security._
 
 ```go
 session := azuretls.NewSession()
@@ -428,6 +442,7 @@ fmt.Println(response.StatusCode, string(response.Body))
 ```
 
 #
+
 ### Timeout
 
 You can set a timeout to the session with the `session.SetTimeout` method.
@@ -446,7 +461,9 @@ if err != nil {
 
 fmt.Println(response.StatusCode, string(response.Body))
 ```
+
 #
+
 ### PreHook and CallBack
 
 You can use the `session.PreHook` method to modify all outgoing requests in the session before they are executed.
@@ -476,6 +493,7 @@ if err != nil {
 ### Cookies
 
 You can manage cookies with the jar of the session. Note that azuretls automatically manage cookies when doing requests.
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -499,6 +517,7 @@ if err != nil {
 ### Websocket
 
 You can use websocket with `session.NewWebsocket` method.
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -520,6 +539,7 @@ if err = ws.WriteJSON(map[string]string{
 #### Response to JSON
 
 You can unmarshal the response body (JSON format) into a struct with the `response.JSON` or `response.MustJSON` methods.
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -542,6 +562,7 @@ fmt.Println(data)
 #### Url encode
 
 You can convert a struct into an url encoded string (used for urls or `application/x-www-form-urlencoded`) with the `azuretls.UrlEncode` method.
+
 ```go
 session := azuretls.NewSession()
 defer session.Close()
@@ -568,12 +589,13 @@ fmt.Println(response.StatusCode, string(response.Body))
 ### Dump
 
 You can dump the request and response with the `session.Dump` method.
+
 ```go
 session := azuretls.NewSession()
 
-session.Dump("./my_dump_dir", 
-    "/any/path/to/ignore", 
-    "can.ignore.this", 
+session.Dump("./my_dump_dir",
+    "/any/path/to/ignore",
+    "can.ignore.this",
     "*.all.subdomains",
 )
 
@@ -589,12 +611,11 @@ This will display the request and response in the console.
 ```go
 session := azuretls.NewSession()
 
-session.Log( 
-    "/any/path/to/ignore", 
-    "can.ignore.this", 
+session.Log(
+    "/any/path/to/ignore",
+    "can.ignore.this",
     "*.all.subdomains",
 )
 
 session.Get("https://www.google.com")
 ```
-

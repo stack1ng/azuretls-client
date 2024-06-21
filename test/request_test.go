@@ -3,12 +3,13 @@ package azuretls_test
 import (
 	"bytes"
 	"context"
-	"github.com/Noooste/azuretls-client"
-	http "github.com/Noooste/fhttp"
 	"net/url"
 	"strings"
 	"testing"
 	"time"
+
+	http "github.com/Noooste/fhttp"
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestRequest_SetContext(t *testing.T) {

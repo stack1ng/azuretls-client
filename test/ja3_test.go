@@ -3,10 +3,11 @@ package azuretls_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Noooste/azuretls-client"
 	"log"
 	"strings"
 	"testing"
+
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestDefaultConfig(t *testing.T) {

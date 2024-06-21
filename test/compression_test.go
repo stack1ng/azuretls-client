@@ -1,9 +1,10 @@
 package azuretls
 
 import (
-	"github.com/Noooste/azuretls-client"
 	"strings"
 	"testing"
+
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestDecompressBody_Gzip(t *testing.T) {

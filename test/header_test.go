@@ -1,10 +1,11 @@
 package azuretls_test
 
 import (
-	"github.com/Noooste/azuretls-client"
-	http "github.com/Noooste/fhttp"
 	"regexp"
 	"testing"
+
+	http "github.com/Noooste/fhttp"
+	"github.com/stack1ng/azuretls-client"
 )
 
 var userAgentReg = regexp.MustCompile(`user-agent`)

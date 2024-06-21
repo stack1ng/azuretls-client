@@ -1,10 +1,11 @@
 package azuretls_test
 
 import (
-	"github.com/Noooste/azuretls-client"
-	http "github.com/Noooste/fhttp"
 	"io"
 	"testing"
+
+	http "github.com/Noooste/fhttp"
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestResponse_CloseBody(t *testing.T) {

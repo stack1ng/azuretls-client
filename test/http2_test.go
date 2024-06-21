@@ -2,8 +2,9 @@ package azuretls_test
 
 import (
 	"encoding/json"
-	"github.com/Noooste/azuretls-client"
 	"testing"
+
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestSession_ApplyAkamaiFingerprintChrome(t *testing.T) {

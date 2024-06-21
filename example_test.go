@@ -3,12 +3,13 @@ package azuretls_test
 import (
 	"bytes"
 	"fmt"
-	"github.com/Noooste/azuretls-client"
-	"github.com/Noooste/fhttp/http2"
 	"net/url"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/Noooste/fhttp/http2"
+	"github.com/stack1ng/azuretls-client"
 )
 
 func ExampleNewSession() {

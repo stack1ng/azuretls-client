@@ -2,9 +2,10 @@ package azuretls_test
 
 import (
 	"bytes"
-	"github.com/Noooste/azuretls-client"
 	"strings"
 	"testing"
+
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestToBytes(t *testing.T) {

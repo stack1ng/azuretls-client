@@ -1,8 +1,9 @@
 package azuretls_test
 
 import (
-	"github.com/Noooste/azuretls-client"
 	"testing"
+
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestSession_Websocket(t *testing.T) {

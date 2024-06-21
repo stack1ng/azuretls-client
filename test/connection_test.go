@@ -2,13 +2,14 @@ package azuretls_test
 
 import (
 	"fmt"
-	"github.com/Noooste/azuretls-client"
-	http "github.com/Noooste/fhttp"
 	url2 "net/url"
 	"runtime"
 	"sync"
 	"sync/atomic"
 	"testing"
+
+	http "github.com/Noooste/fhttp"
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestSessionConn(t *testing.T) {

@@ -1,9 +1,10 @@
 package azuretls_test
 
 import (
-	"github.com/Noooste/azuretls-client"
 	"net/url"
 	"testing"
+
+	"github.com/stack1ng/azuretls-client"
 )
 
 func TestPins(t *testing.T) {
