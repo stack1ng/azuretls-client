@@ -311,7 +311,7 @@ func (s *Session) initConn(req *Request) (conn *Conn, err error) {
 	conn.mu.Lock()
 	defer conn.mu.Unlock()
 
-	if conn.Conn == nil || !conn.checkTLS() { //no "use of closed network connection" ERROR after add this
+	if conn.Conn == nil {
 		if s.ProxyDialer != nil {
 			if err = s.getProxyConn(req, conn, host); err != nil {
 				return nil, err
