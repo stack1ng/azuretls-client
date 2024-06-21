@@ -1,5 +1,3 @@
-github.com/stack1ng/azuretls-client v1.4.17 h1:S1AP9st+GJu1zUpQEjuqal9EogobwW//hUPyUGmdh9A=
-github.com/stack1ng/azuretls-client v1.4.17/go.mod h1:V14pTcCglpo2kEte8rrdDunWmbbc723yynJfWk0oLso=
 github.com/Noooste/fhttp v1.0.12 h1:2N15bIATKaC6q+LVyRGyxPyuqEPvwAS3Uk1peC3YVHU=
 github.com/Noooste/fhttp v1.0.12/go.mod h1:CMVxKOhNheqJN5HYE4Rlvz2SRdV8Uv7YWmi6OwmB/Bk=
 github.com/Noooste/utls v1.2.9 h1:VLNs0WmPFjswU4PxXTHl0AY4sarHi+638c3cSI9Hsng=

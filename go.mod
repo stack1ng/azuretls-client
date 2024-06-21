@@ -5,7 +5,6 @@ go 1.21
 toolchain go1.22.2
 
 require (
-	github.com/stack1ng/azuretls-client v1.4.17
 	github.com/Noooste/fhttp v1.0.12
 	github.com/Noooste/utls v1.2.9
 	github.com/Noooste/websocket v1.0.3
