@@ -191,10 +191,7 @@ func (c *Conn) checkTLS() bool {
 		return false
 	}
 	_, ok := c.Conn.(*net.TCPConn)
-	if !ok { // if the connection is dead
-		return false
-	}
-	return true
+	return ok
 }
 
 func (c *Conn) tryUpgradeHTTP2(tr *http2.Transport) bool {
