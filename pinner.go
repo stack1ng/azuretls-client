@@ -2,10 +2,10 @@ package azuretls
 
 import (
 	"crypto/sha256"
+	"crypto/tls"
 	"crypto/x509"
 	"encoding/base64"
 	"errors"
-	tls "github.com/Noooste/utls"
 	"net/url"
 	"sync"
 )
@@ -64,21 +64,18 @@ func (p *PinManager) Verify(c *x509.Certificate) bool {
 	return ok && v
 }
 
-// New establishes a connection to the provided address, retrieves
-// its SSL/TLS certificates, and pins their public keys in the
+// New establishes a proxyless connection to the provided address,
+// retrieves its SSL/TLS certificates, and pins their public keys in the
 // PinManager. This can be used initially to populate the PinManager
 // with pins from a trusted service.
 func (p *PinManager) New(addr string) (err error) {
-	dial, err := tls.Dial("tcp", addr, &tls.Config{InsecureSkipVerify: true})
+	peerCertificates, err := p.getCertsFor(addr)
 	if err != nil {
-		return errors.New("failed to generate pins for " + addr + ": " + err.Error())
+		return err
 	}
 
-	cs := dial.ConnectionState()
-	_ = dial.Close()
-
-	var pins = make([]string, 0, len(cs.PeerCertificates))
-	for _, c := range cs.PeerCertificates {
+	var pins = make([]string, 0, len(peerCertificates))
+	for _, c := range peerCertificates {
 		pins = append(pins, Fingerprint(c))
 	}
 
@@ -89,6 +86,36 @@ func (p *PinManager) New(addr string) (err error) {
 	p.mu.Unlock()
 
 	return nil
+}
+
+var (
+	certCache   = make(map[string][]*x509.Certificate)
+	certCacheMu = new(sync.RWMutex)
+)
+
+func (p *PinManager) getCertsFor(addr string) ([]*x509.Certificate, error) {
+	certCacheMu.RLock()
+	certs, ok := certCache[addr]
+	certCacheMu.RUnlock()
+
+	if ok {
+		return certs, nil
+	}
+
+	// Reference the std lib tls to utilize the system's root certificates.
+	dial, err := tls.Dial("tcp", addr, nil) //&tls.Config{InsecureSkipVerify: true})
+	if err != nil {
+		return nil, errors.New("failed to retrieve certificates for " + addr + ": " + err.Error())
+	}
+
+	cs := dial.ConnectionState()
+	_ = dial.Close()
+
+	certCacheMu.Lock()
+	certCache[addr] = cs.PeerCertificates
+	certCacheMu.Unlock()
+
+	return cs.PeerCertificates, nil
 }
 
 func (p *PinManager) GetPins() []string {

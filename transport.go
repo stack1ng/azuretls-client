@@ -2,9 +2,10 @@ package azuretls
 
 import (
 	"context"
+	"net"
+
 	http "github.com/Noooste/fhttp"
 	"github.com/Noooste/fhttp/http2"
-	"net"
 )
 
 func (s *Session) initTransport(browser string) (err error) {

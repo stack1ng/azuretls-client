@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	http "github.com/Noooste/fhttp"
-	"github.com/Noooste/fhttp/cookiejar"
 	"net/url"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	http "github.com/Noooste/fhttp"
+	"github.com/Noooste/fhttp/cookiejar"
 )
 
 const (

@@ -2,15 +2,16 @@ package azuretls
 
 import (
 	"context"
-	http "github.com/Noooste/fhttp"
-	"github.com/Noooste/fhttp/cookiejar"
-	"github.com/Noooste/fhttp/http2"
-	tls "github.com/Noooste/utls"
 	"io"
 	"net/url"
 	"regexp"
 	"sync"
 	"time"
+
+	http "github.com/Noooste/fhttp"
+	"github.com/Noooste/fhttp/cookiejar"
+	"github.com/Noooste/fhttp/http2"
+	tls "github.com/Noooste/utls"
 )
 
 const (
@@ -53,9 +54,8 @@ type Session struct {
 	// Proxy address.
 	Proxy string
 	// If true, use HTTP2 for proxy connections.
-	H2Proxy        bool
-	ProxyDialer    *proxyDialer
-	proxyConnected bool
+	H2Proxy     bool
+	ProxyDialer *proxyDialer
 
 	dump       bool
 	dumpDir    string
@@ -97,6 +97,14 @@ type Session struct {
 	ctx context.Context
 	// Headers for User-Agent and Sec-Ch-Ua, respectively.
 	UserAgent string
+
+	// KeyLogWriter optionally specifies a destination for TLS master secrets
+	// in NSS key log format that can be used to allow external programs
+	// such as Wireshark to decrypt TLS connections.
+	// See https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format.
+	// Use of KeyLogWriter compromises security and should only be
+	// used for debugging.
+	KeyLogWriter io.Writer
 
 	closed bool
 }

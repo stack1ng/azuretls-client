@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/x509"
 	"errors"
+	"io"
 	"net"
 	"net/url"
 	"strings"
@@ -22,7 +23,6 @@ const (
 type Conn struct {
 	TLS   *tls.UConn        // tls connection
 	HTTP2 *http2.ClientConn // http2 connection
-	h2tr  *http2.Transport
 
 	Conn net.Conn // Tcp connection
 
@@ -36,6 +36,8 @@ type Conn struct {
 	ClientHelloSpec func() *tls.ClientHelloSpec
 
 	ForceHTTP1 bool
+
+	KeyLogWriter io.Writer
 
 	mu *sync.RWMutex
 
@@ -299,8 +301,12 @@ func (s *Session) initConn(req *Request) (conn *Conn, err error) {
 		conn.TimeOut = req.TimeOut
 	}
 
-	if conn.InsecureSkipVerify == false {
+	if !conn.InsecureSkipVerify {
 		conn.InsecureSkipVerify = req.InsecureSkipVerify
+	}
+
+	if conn.KeyLogWriter == nil {
+		conn.KeyLogWriter = s.KeyLogWriter
 	}
 
 	conn.SetContext(s.ctx)
@@ -330,7 +336,6 @@ func (s *Session) initConn(req *Request) (conn *Conn, err error) {
 		if err = conn.makeTLS(host); err != nil {
 			conn.Close()
 			return
-
 		}
 
 		if req.parsedUrl.Scheme != SchemeWss {
@@ -405,6 +410,8 @@ func (c *Conn) NewTLS(addr string) (err error) {
 
 			return nil
 		},
+
+		KeyLogWriter: c.KeyLogWriter,
 	}
 
 	if c.Conn == nil {
@@ -423,7 +430,6 @@ func (c *Conn) NewTLS(addr string) (err error) {
 			}
 		}
 	}
-
 	if err = c.TLS.ApplyPreset(specs); err != nil {
 		return errors.New("failed to apply preset: " + err.Error())
 	}
