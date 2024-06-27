@@ -9,6 +9,7 @@ import (
 	"time"
 
 	http "github.com/Noooste/fhttp"
+	"github.com/Noooste/fhttp/cookiejar"
 	"github.com/Noooste/fhttp/http2"
 	tls "github.com/Noooste/utls"
 )
@@ -34,7 +35,7 @@ type Session struct {
 	HeaderOrder HeaderOrder
 
 	// Stores cookies across session requests.
-	CookieJar http.CookieJar
+	CookieJar *cookiejar.Jar
 
 	// Name or identifier of the browser used in the session.
 	Browser string
