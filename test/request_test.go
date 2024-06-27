@@ -3,6 +3,7 @@ package azuretls_test
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"net/url"
 	"strings"
 	"testing"
@@ -193,4 +194,22 @@ func TestRequest_NoCookies2(t *testing.T) {
 		t.Fatal("TestRequest_NoCookies2 failed, expected: false, got: true")
 		return
 	}
+}
+
+func TestRequest_InsecureSkipVerify(t *testing.T) {
+	session := azuretls.NewSession()
+
+	// commenting out this line will make the code work
+	session.InsecureSkipVerify = true
+
+	response, err := session.Get("https://www.google.com")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(response.StatusCode)
+	response, err = session.Get("https://www.google.com")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(response.StatusCode)
 }

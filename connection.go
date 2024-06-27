@@ -175,7 +175,12 @@ func (c *Conn) makeTLS(addr string) error {
 	if c.checkTLS() {
 		return nil
 	}
-	return c.NewTLS(addr)
+
+	if c.TLS == nil {
+		return c.NewTLS(addr)
+	}
+
+	return nil
 }
 
 func (c *Conn) checkTLS() bool {
@@ -189,11 +194,9 @@ func (c *Conn) checkTLS() bool {
 				return false
 			}
 		}
-	} else if c.Conn == nil {
-		return false
 	}
-	_, ok := c.Conn.(*net.TCPConn)
-	return ok
+
+	return true
 }
 
 func (c *Conn) tryUpgradeHTTP2(tr *http2.Transport) bool {
