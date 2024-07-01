@@ -46,6 +46,9 @@ type Session struct {
 	HTTP2Transport *http2.Transport
 	Transport      *http.Transport
 
+	// A custom http2 config to use for fingerprintabler values instead of browser defaults
+	H2Config *Http2Config
+
 	// Function to provide custom TLS handshake details.
 	GetClientHelloSpec func() *tls.ClientHelloSpec
 

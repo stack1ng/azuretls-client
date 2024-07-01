@@ -44,6 +44,14 @@ func (s *Session) initHTTP1() {
 	}
 }
 
+type Http2Config struct {
+	Priorities     []http2.Priority
+	Settings       map[http2.SettingID]uint32
+	SettingsOrder  []http2.SettingID
+	ConnectionFlow uint32
+	HeaderPriority *http2.PriorityParam
+}
+
 func (s *Session) initHTTP2(browser string) error {
 	tr, err := http2.ConfigureTransports(s.Transport) // upgrade to HTTP2, while keeping http.Transport
 
@@ -51,10 +59,22 @@ func (s *Session) initHTTP2(browser string) error {
 		return err
 	}
 
-	tr.Priorities = defaultStreamPriorities(browser)
-	tr.Settings, tr.SettingsOrder = defaultHeaderSettings(browser)
-	tr.ConnectionFlow = defaultWindowsUpdate(browser)
-	tr.HeaderPriority = defaultHeaderPriorities(browser)
+	h2Config := s.H2Config
+	if h2Config == nil {
+		s, so := defaultHeaderSettings(browser)
+		h2Config = &Http2Config{
+			Priorities:     defaultStreamPriorities(browser),
+			Settings:       s,
+			SettingsOrder:  so,
+			ConnectionFlow: defaultWindowsUpdate(browser),
+			HeaderPriority: defaultHeaderPriorities(browser),
+		}
+	}
+
+	tr.Priorities = h2Config.Priorities
+	tr.Settings, tr.SettingsOrder = h2Config.Settings, h2Config.SettingsOrder
+	tr.ConnectionFlow = h2Config.ConnectionFlow
+	tr.HeaderPriority = h2Config.HeaderPriority
 	tr.StrictMaxConcurrentStreams = true
 
 	tr.PushHandler = &http2.DefaultPushHandler{}
