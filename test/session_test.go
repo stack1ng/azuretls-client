@@ -512,7 +512,7 @@ func TestSession_TooManyRedirects(t *testing.T) {
 
 	resp, err := session.Get("https://httpbin.org/redirect/11")
 
-	if err == nil || !strings.Contains(err.Error(), "too many Redirects") {
+	if err == nil || !errors.Is(err, azuretls.ErrTooManyRedirects) {
 		t.Fatal("TestSession_TooManyRedirects failed, expected: too many Redirects, got: ", err)
 		return
 	}
@@ -526,7 +526,7 @@ func TestSession_TooManyRedirects(t *testing.T) {
 
 	resp, err = session.Get("https://httpbin.org/redirect/2")
 
-	if err == nil || !strings.Contains(err.Error(), "too many Redirects") {
+	if err == nil || !errors.Is(err, azuretls.ErrTooManyRedirects) {
 		t.Fatal("TestSession_TooManyRedirects failed, expected: too many Redirects, got: ", err)
 		return
 	}

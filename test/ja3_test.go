@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/stack1ng/azuretls-client"
@@ -326,4 +327,24 @@ func TestJa3(t *testing.T) {
 	} else {
 		fmt.Println(response.StatusCode, string(response.Body))
 	}
+}
+
+func test(wg *sync.WaitGroup) {
+	defer wg.Done()
+	for i := 0; i < 1e3; i++ {
+		azuretls.GetLastChromeVersion()
+	}
+}
+
+func TestGetLastChromeVersion(t *testing.T) {
+	var (
+		wg = new(sync.WaitGroup)
+	)
+
+	for i := 0; i < 1e3; i++ {
+		wg.Add(1)
+		go test(wg)
+	}
+
+	wg.Wait()
 }
